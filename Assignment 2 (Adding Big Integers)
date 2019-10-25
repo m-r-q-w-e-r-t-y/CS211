@@ -1,1 +1,125 @@
 
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+//always declare before main()
+string add(string a, string b);
+
+int main()
+{
+	while(true)
+	{
+		string a, b;
+		cout << "Enter a string \"number\" (a): ";
+		cin >> a;
+		cout << endl;
+		
+		if(!a.compare("done"))
+		{
+			break;
+		}
+
+		cout << "Enter a string \"number\" (b): ";
+		cin >> b;
+		cout << endl;
+        
+        if(a.length() > 100)
+        {
+            cout << "----- ERROR -------" << endl << "String \"number\" (a) must be LESS THAN 101 characters." << endl << "----- ERROR -------"  << endl << "Try again (a): ";
+		    cin >> a;
+		    cout << endl;
+        }
+        if(b.length() > 100)
+        {
+            cout << "----- ERROR -------" << endl << "String \"number\" (b) must be LESS THAN 101 characters." << endl << "----- ERROR -------"  << endl << "Try again (b): ";
+		    cin >> b;
+		    cout << endl;
+        }
+
+		cout << "--" << endl << "Adding the two numbers results in: " << add(a, b) << endl << endl;
+	}
+	return 0;
+	//test code
+	//cout << add("2345566777844567", "9999988777765768009998") << endl; // 9999991123332545854565
+    //cout << add("9999988777765768009998", "9999988777765768009998") << endl; // 19999977555531536019996
+
+}
+
+string add(string a, string b)
+{
+	string result = "";
+	string big;
+	string small;
+	char charNum;
+	
+	//compare lengths of both strings a & b
+	int lengthOfA = a.length();
+	int lengthOfB = b.length();
+
+	//if a is smaller make small = a
+	//					   big = b
+	if(lengthOfA < lengthOfB)
+	{
+		big = b;
+		small = a;
+	}
+
+	//do opposite of if statement above
+	else
+	{
+		big = a;
+		small = b;
+	}
+	while(true)
+	{
+		if(small.length() != big.length())
+		{
+			small = '0' + small;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	//since both strings are of the same length, only ONE for loop is needed
+	for(int i = small.length()-1; i >= 0; i--)
+	{
+		//check to see if the sum is >= to 10
+		if ((big[i]-48) + (small[i]-48) >= 10)
+		{
+			//create a char number which will be concatenated to the string
+			charNum = ((big[i]-48) + (small[i]-48) - 10) + '0';
+			//add char number to string
+			result = charNum + result;
+
+			//if there is a term to the left do this
+			if(i != 0)
+			{
+				//change the next left term to account for carry
+				//change from char to int
+				big[i-1] = (big[i-1] - 48) + 1;
+				//change back to char
+				big[i-1] = big[i-1] + '0';
+			}
+
+			//if the left is out-of-bounds, just add 1 to the result
+			else
+			{
+				result = '1' + result;
+			}
+		}
+		//if the sum is less than 10
+		else
+		{
+			charNum = ((big[i]-48) + (small[i]-48)) + '0';
+			result = charNum + result;
+		}
+	}
+	return result;
+}
+
+
