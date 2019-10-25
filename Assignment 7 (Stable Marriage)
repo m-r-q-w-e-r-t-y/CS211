@@ -1,0 +1,198 @@
+
+
+#include <iostream>
+
+using namespace std;
+
+ 
+
+bool ok(int q[], int c) 
+
+{
+
+    // c and q[c] are the current man and woman to be matched
+
+    // i and q[i] are the man and woman already married
+
+ 
+
+    // the smaller number means more preferable.
+
+    // mp[man][woman] = the score that man given to that woman
+
+    static int mp[3][3] = {{ 0,2,1 },   // Man#0's preferences
+
+                           { 0,2,1 },   // Man#1's preferences
+
+                           { 1,2,0 }};  // Man#2's preferences
+
+    
+
+    // wp[woman][man] = the score that woman given to that man
+
+    static int wp[3][3] = {{ 2,1,0 },   // Woman#0's preferences
+
+                           { 0,1,2 },   // Woman#1's preferences
+
+                           { 2,0,1 }};  // Woman#2's preferences
+
+ 
+
+    // Test #1: Similar to row test in 8 queens 
+
+    // Check if the current woman has already been married to other men.
+
+    for(int i = 0; i < c; i++)
+
+    {
+
+      if(mp[c][q[i]] < mp[c][q[c]] & wp[q[i]][c] < wp[q[i]][i])
+
+      {
+
+        return false;
+
+      }     
+
+      if(wp[q[c]][i] < wp[q[c]][c] & mp[i][q[c]] < mp[i][q[i]])
+
+      {
+
+        return false;
+
+      }    
+
+      if(q[c] == q[i])
+
+      {
+
+        return false;
+
+      }
+
+    }
+
+    return true;
+
+}
+
+ 
+
+void print(int q[]) 
+
+{
+
+    static int solution = 0;
+
+    cout << "Solution #" << ++solution << ":\nMan\tWoman\n";
+
+    for (int i = 0; i < 3; ++i)
+
+        cout << i << "\t" << q[i] << "\n";
+
+    cout << "\n";
+
+}
+
+ 
+
+int main() 
+
+{
+
+    // Create MAN (columns)
+
+   int col = 0;
+
+
+
+   // Initialize the array to 0
+
+   int q[3] = {};
+
+
+
+  // MAN 0 gets WOMAN 0
+
+   q[0] = 0;
+
+
+
+   // MEN
+
+   while (col >= 0) 
+
+   {
+
+      // Move to the next WOMAN
+
+      col++;
+
+
+
+      // If you have passed the last column,
+
+      if(col > 2)
+
+      {
+
+         // Call the print function
+
+         print(q);
+
+      }
+
+      
+
+      // Otherwise, move to one before the first row
+
+      else
+
+      {
+
+        q[col] = -1;
+
+      }
+
+
+
+      // WOMEN
+
+      while (col >= 0) 
+
+      {
+
+        q[col]++;
+
+
+
+        // If you have passed the end of the column, backtrack
+
+        if(q[col] > 2)
+
+        {
+
+          col--;
+
+        }
+
+
+
+        // Otherwise, call the ok function.  If it returns true, go back to the beginning of the outer loop.
+
+        else if (ok(q, col))
+
+        {
+
+          break;
+
+        }
+
+      }
+
+   }
+
+   return 0;
+
+}
+
