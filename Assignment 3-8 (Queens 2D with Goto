@@ -1,0 +1,144 @@
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+
+  //initialize board
+  int q[8][8] = {};
+  
+  //initialize the "row" and "col"
+  int row = 0;
+  int col = 0;
+
+  int solution = 0;
+  //place the first queen in q[0][0]
+  q[row][col] = 1;
+
+//*****************************************
+nextCol:
+
+  //move to next column
+  col++;
+
+  //if "col++" goes out
+  if(col > 7)
+  {
+    goto print;
+  }
+
+  //otherwise, reset "row" to -1
+  row = -1;
+//*****************************************
+
+
+
+
+
+//*****************************************
+nextRow: 
+
+  //move to next row
+  row++;
+
+  //if "row++" goes out
+  //was --> if row>8
+  if(row > 7)
+  {
+    goto backtrack;
+  }
+
+  //if there is a QUEEN in the THIS row, go to the next row
+  for(int i = 1; i <= col; i++)
+  {
+    if(q[row][col-i] == 1)
+    {
+      goto nextRow;
+    }
+  }
+
+  //if there is a QUEEN in the upperleft
+  for(int i = 1; (i < 8); i++)
+  {
+  	if((row-i) < 0 || (col-i) < 0)
+  	{
+  		break;
+  	}
+	if(q[row - i][col - i] == 1)
+	{
+	  goto nextRow;
+	}
+  }
+
+  //if there is a QUEENS in the lowerleft
+  for(int i = 1; (i < 8); i++)
+  {
+  	if((row+i) > 7 || (col-i) < 0)
+  	{
+  		break;
+  	}
+    if(q[row + i][col - i] == 1)
+    {
+      goto nextRow;
+    }
+  }
+
+  //if program arrives here, then place a QUEEN
+  q[row][col] = 1;
+  goto nextCol;
+//*****************************************
+ 
+ 
+
+
+ 
+//*****************************************
+backtrack:
+    //Move to the previous column
+    col--;
+
+    // If column is -1, (out of board, no more solution can be found), exit the program
+    if(col < 0)
+    {
+      return 0;
+    }
+    // Locate the position (row number) of the queen in that column
+    for(int i = 0; i < 8; i++)
+    {
+      if(q[i][col] == 1)
+      {
+      	row = i;
+        break;
+      }
+    }
+    // Remove the queen
+    q[row][col] = 0;
+
+    goto nextRow;
+//*****************************************
+
+
+
+
+
+//*****************************************
+print:
+    // Print the solution counter
+	cout << "Solution #" << ++solution << ":" <<endl;
+    for(int i = 0; i < 8; i++)
+    {
+      for(int j = 0; j < 8; j++)
+      {
+        cout << q[i][j];
+      }
+      cout << endl;
+   }
+   cout<<endl;
+   goto backtrack;
+
+   return 0;
+  
+
+}
+
