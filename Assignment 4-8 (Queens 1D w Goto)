@@ -1,0 +1,176 @@
+
+
+#include <iostream>
+
+using namespace std;
+
+
+
+int main() {
+
+
+
+  //initialize board
+
+  int q[8] = {};
+
+  
+
+  //initialize the "col"
+
+  int col = 0;
+
+  int solution = 0;
+
+    
+
+  //place the first queen in q[0][0]
+
+  q[0] = 0;
+
+
+
+//*****************************************
+
+nextCol:
+
+
+
+  //move to next column
+
+  col++;
+
+
+
+  //if "col++" goes out
+
+  if(col > 7)
+
+  {
+
+    goto print;
+
+  }
+
+  q[col] = -1;
+
+//*****************************************
+
+
+
+
+
+
+
+
+
+
+
+//*****************************************
+
+nextRow: 
+
+
+
+  //move to next row
+
+  q[col]++;
+
+  if(q[col]>7)
+
+  {
+
+      goto backtrack;
+
+  }
+
+  //if "row++" goes out
+
+  //if there is a QUEEN in the THIS row, go to the next row
+
+  for(int i = 0; i < col; i++)
+
+  {
+
+    if(q[col] == q[i] || (col-i) == abs(q[col]-q[i]))
+
+    {
+
+      goto nextRow;
+
+    }
+
+  }
+
+  goto nextCol;
+
+//*****************************************
+
+ 
+
+ 
+
+
+
+
+
+ 
+
+//*****************************************
+
+backtrack:
+
+    //Move to the previous column
+
+    col--;
+
+
+
+    // If column is -1, (out of board, no more solution can be found), exit the program
+
+    if(col < 0)
+
+    {
+
+      return 0;
+
+    }
+
+  
+
+
+
+    goto nextRow;
+
+//*****************************************
+
+
+
+
+
+
+
+
+
+
+
+//*****************************************
+
+print:
+
+    cout << "Solution: #" << ++solution << endl;    
+
+    for(int i=0; i<8; i++)
+
+    {
+
+        cout << q[i];
+
+    }
+
+    cout << endl << endl;
+
+    goto backtrack;
+
+}
+
